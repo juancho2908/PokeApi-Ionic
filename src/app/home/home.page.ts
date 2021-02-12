@@ -28,19 +28,24 @@ export class HomePage implements OnInit {
         if (event){
           event.target.complete(); //Finalmente me completa los datos
         }
-
-        if(this.offset ==125){
+        if(this.offset == 125){
           this.infinite.disabled = true; // Aqui le digo que si la funcion llega hasta 125 me desahabilite los demas pokemons.
         }
     });
 
   }
   onSearchChange(e){ //Esta funcion es para buscar los pokemons
-    let value =e.detail.value;
-    if (value ==''){
-      this.offset =0;
-      this.loadPokemon();
-      return;
+    let value =e.detail.value; //evaluar los datos de los pokemon para la busqueda
+    if (value ==''){//Voy a ingresar la id y que me genere la busqueda
+      this.offset = 0; //Me va a buscar desde el id 0
+      this.loadPokemon();//me carga el resultado
+      return;//retorna el valor
     }
+    this.pokeService.findPokemon(value).subscribe(res =>{
+      this.pokemon = [res]; //En este caso si lo encuentra me presenta el resultado
+    }, err =>{
+      this.pokemon = []; // caso contrario me presenta campos vacios.
+    });
   }
+
 }
